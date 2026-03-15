@@ -1,0 +1,551 @@
+\documentclass[11pt, aspectratio=169, xcolor={dvipsnames}]{beamer} %without handout s.t. one may use pause etc.; dauert aber etwas länger zum kompilieren...
+\usepackage{tikz}
+\usepackage{comment}
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage[font=footnotesize]{subfig}
+\usepackage[utf8]{inputenc}
+\usetikzlibrary{arrows.meta,shapes,calc,shapes.geometric}
+\usetikzlibrary{angles,quotes}
+\usepackage{todonotes}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems}
+\usepackage{graphicx}
+
+\tikzset{
+	frage/.style = {rectangle, rounded corners, inner sep=10pt, fill=blue!8, draw=blue,  font=\fontsize{30}{25}\selectfont\sffamily, text centered},
+	blitz/.style = {rectangle, rounded corners, fill=orange!20, draw=orange, font=\fontsize{30}{30}\selectfont\sffamily,  inner sep=10pt, text centered},
+	blitzvortrag/.style={rectangle, rounded corners, fill=red!20, draw=red, font=\fontsize{30}{30}\selectfont\sffamily,  inner sep=10pt, text centered},
+	gruppe/.style = {font=\fontsize{25}{25}\selectfont\sffamily, ellipse, fill=LimeGreen!30},
+	titel/.style = {text centered, font=\fontsize{55}{55}\selectfont\sffamily},
+	%every node/.style = {fill=white, font=\fontsize{25}{25}\selectfont\sffamily, align=center},
+	dreieck/.pic = {
+		\draw[scale=0.7, ForestGreen, thick, fill=LimeGreen!40] (0,0) -- (1.2, 0) --  (0, 2) -- cycle;
+	},
+	dreiecksp/.pic = {
+		\draw[scale=0.7, ForestGreen, thick, fill=LimeGreen!40] (0,0) --  (-1.2,0) -- (0, 2) -- cycle;
+	},
+	dreieckmatt/.pic = {
+		\draw[scale=0.7, ForestGreen, densely dotted, thick, fill=LimeGreen!20] (0,0) -- (1.2, 0) --  (0, 2) -- cycle;
+	},
+	dreieckspmatt/.pic = {
+		\draw[scale=0.7, ForestGreen, densely dotted, thick, fill=LimeGreen!20] (0,0) --  (-1.2,0) -- (0, 2) -- cycle;
+	},
+	dreieckblau/.pic = {
+		\draw[scale=0.7, Blue, thick, fill=ProcessBlue!40] (0,0) -- (1.2, 0) --  (0, 2) -- cycle;
+	},
+	dreiecklila/.pic = {
+		\draw[scale=0.7, Violet, thick, fill=Thistle!40] (0,0) -- (-1.2, 0) --  (0, 2) -- cycle;
+	},
+	dreieckgruenblau/.pic = {
+		\draw[scale=0.7, teal, thick, fill=Aquamarine!40] (0,0) -- (1.2, 0) --  (0, 2) -- cycle;
+	},
+	dreieckblausp/.pic = {
+		\draw[scale=0.7, Orange, thick, fill=YellowOrange!40] (0,0) --  (-1.2,0) -- (0, 2) -- cycle;
+	},
+	spiegelpfeil/.pic = {
+		\draw[thick, ->, fill=white]	(-1.5,0.40) to[out=305, in=165](0,0) arc(-95:275:.5) to [out=15, in=215](1.5,0.4);
+	},
+	spiegelpfeilrot/.pic = {
+		\draw[thick, ->, red, fill=white]	(-1.5,0.40) to[out=305, in=165](0,0) arc(-95:275:.5) to [out=15, in=215](1.5,0.4);
+	},
+	fahne/.pic = {
+		\draw[thick]	(0,0) -- (1.4, 0) -- (1.2, 0.2) -- (1,0);
+	},
+	fahneunten/.pic = {
+		\draw[thick]	(0,0) -- (1.4, 0) -- (1.2, -0.2) -- (1,0);
+	},
+	fahnelinks/.pic = {
+		\draw[thick]	(0,0) -- (-1.4, 0) -- (-1.2, 0.2) -- (-1,0);
+	},
+	fahnerotiert/.pic = {
+		\draw[thick]	(0,0) -- (-1.4, 0) -- (-1.2, -0.2) -- (-1,0);
+	},
+	dreh2pink/.pic = {
+		\draw[thick, fill=magenta, scale=0.2] (-0.5,0) -- (0,1) -- (0.5,0) -- (0,-1) -- cycle;
+	},
+	dreh2blue/.pic = {
+		\draw[thick, fill=blue, scale=0.2] (-0.5,0) -- (0,1) -- (0.5,0) -- (0,-1) -- cycle;
+	},
+	dreh2LimeGreen/.pic = {
+		\draw[thick, fill=LimeGreen, scale=0.2] (-0.5,0) -- (0,1) -- (0.5,0) -- (0,-1) -- cycle;
+	},
+	dreh2orange/.pic = {
+		\draw[thick, fill=orange, scale=0.2] (-0.5,0) -- (0,1) -- (0.5,0) -- (0,-1) -- cycle;
+	},
+	dreh3/.pic = {
+		\draw (0,0) node[regular polygon, regular polygon sides=3, inner sep=0.06cm, thick, fill=red, draw=black] {};
+	},
+	dreh4/.pic = {
+		\draw (0,0) node[regular polygon, regular polygon sides=4, inner sep=0.07cm, thick, fill=LimeGreen, draw=black] {};
+	},
+	dreh6/.pic = {
+		\draw (0,0) node[regular polygon, regular polygon sides=6, inner sep=0.08cm, thick, fill=blue, draw=black] {};
+	},
+}
+
+
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\green}{\textcolor{ForestGreen!80!black}}
+\newcommand{\white}{\textcolor{white}}
+\definecolor{beamerblue}{RGB}{9, 67, 124}
+\newcommand{\beamerblue}{\textcolor{beamerblue}}
+
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}
+\newtheorem{kor}[satz]{Folgerung}
+
+\theoremstyle{definition} 
+\newtheorem{Def}[satz]{Definition}
+
+%\tcolorboxenvironment{satz}{
+	%	colback=Cyan!15,  %Green!15,
+	%	colframe=beamerblue,  %Green!80!Blue,
+	%	%blanker, 
+	%	breakable,left=5mm,
+	%	before skip=10pt,after skip=10pt,
+	%	%borderline west={1mm}{0pt}{orange}
+	%}
+
+\mode<presentation>{
+	%	\useinnertheme{circles}
+	\usetheme{Boadilla}
+	\usecolortheme[RGB={9,67,124}]{structure}
+	%	\usecolortheme{whale}
+	%	\usecolortheme{orchid}
+	\beamertemplatenavigationsymbolsempty
+	%	\setbeamercolor{alerted text}{fg=blue}
+	%	\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+	\setbeamertemplate{frametitle}[default][center] %zentrierte Titel
+	\setbeamercovered{invisible} %covered space is invisible and not only shaded
+}
+
+%\newtcolorbox{aufgabenbox}
+%{
+%	colback  = BurntOrange!20, 
+%	colframe = BurntOrange!20, 
+%	left=1pt
+%}
+%
+%\newtcolorbox{satzbox}
+%{
+%	colback=Cyan!15,  %Green!15,
+%	colframe=beamerblue,  %Green!80!Blue,
+%	%blanker, 
+%	breakable,left=2mm,
+%	before skip=10pt,after skip=10pt,
+%	%borderline west={1mm}{0pt}{orange}
+%}
+%\newtcolorbox{defbox}
+%{
+%	colback  = green!15, 
+%	colframe = green!15, 
+%	left=1pt
+%}
+
+\newtcbtheorem{defbox}{Definition} 
+{ enhanced jigsaw,colframe=ForestGreen!80,%interior hidden, %vorher war Blue!60
+	breakable,before skip=10pt,after skip=10pt
+}{} %options
+
+\newtcbtheorem{satzbox}{Satz} 
+{ enhanced jigsaw,colframe=Plum!80,%interior hidden, %vorher war Blue!60
+	breakable,before skip=10pt,after skip=10pt
+}{} %options
+
+\newtcbtheorem{lemmabox}{Lemma (Hilfssatz)} 
+{ enhanced jigsaw,colframe=Plum!80,%interior hidden, %vorher war Blue!60
+	breakable,before skip=10pt,after skip=10pt
+}{}
+
+\newtcbtheorem{folgbox}{Folgerung} 
+{ enhanced jigsaw,colframe=Plum!80,%interior hidden, %vorher war Blue!60
+	breakable,before skip=10pt,after skip=10pt
+}{} %options
+
+\newtcolorbox{aufgabenbox}
+{
+	colback  = Orange!20, 
+	colframe = Orange!20, 
+	left=1pt
+}
+
+
+\title{Workshops für Schülerinnen und Schüler}
+\author{Dr. Anna Schilling}
+
+%\institute{Forschungsstelle Geometrie + Dynamik}
+
+\subtitle{}
+\date{17.3.2026}
+
+%\includegraphics{Bilder/GEODYN-Logo_RGB.png}}
+
+\begin{document}
+
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\red{Bild Flyer}
+\end{frame}
+
+\begin{frame}
+	\begin{enumerate}
+		\item Übersicht über die Workshops
+		\item Anpassung an die Schule an konkreten Beispielen
+		\begin{itemize}
+			\item Dobble
+			\item Zauberwürfel
+		\end{itemize}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\Large{\beamerblue{Teil 1:}}
+	\Large{\beamerblue{Unsere Workshops}}
+\end{frame}
+
+\begin{frame}{Euler-Charakteristik und Topologie}
+	\begin{minipage}{0.6\textwidth}
+		Inhalt:
+		\begin{itemize}
+			\item Eulersche Polyederformel 
+			\item Euler-Charakteristik von planaren Graphen
+			\item Der Eulersche Polyedersatz für konvexe Polyeder
+			\item Topologie und Invarianten
+		\end{itemize}
+		
+		\hfill
+		
+		Mathematik:
+		\begin{itemize}
+			\item Planare Graphen 
+			\item Konvexe Polyeder
+			\item Stereographische Projektion 
+			\item Beweis der Polyederformel
+			\item Ideen der Topologie und Invarianten
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.38\textwidth}
+	
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Dobble und Projektive Geometrie}
+	\begin{minipage}{0.65\textwidth}
+		Inhalt: 
+		\begin{itemize}
+			\item Das Spiel Dobble 
+			\item Ideale Dobble-Spiele
+			\item (Ebene) projektive Geometrie
+			\item Existenz von Dobble-Spielen
+		\end{itemize}
+		
+		\hfill
+		
+		Mathematik:
+		\begin{itemize}
+			\item Eigenschaften idealer Dobble-Spiele
+			\begin{itemize}
+				\item Symbole pro Karte = Häufigkeit der Symbole
+				\item Anzahl aller Karten = Anzahl aller Symbole
+			\end{itemize}
+			\item Idee projektive Geometrie
+			\item Eigenschaften endlicher projektiver Ebenen
+			\item Struktur mathematischer Aussagen
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.33\textwidth}
+		\includegraphics[height=0.4\textheight]{Bilder/Karte1.pdf}\\ \includegraphics[height=0.4\textheight]{Bilder/Karte2.pdf}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Zauberwürfel und Gruppentheorie}
+	\begin{minipage}{0.6\textwidth}
+		Inhalt: 
+		\begin{itemize}
+			\item Der Zauberwürfel und Drehungen 
+			\item Gruppe der Vertauschungen
+			\item Mathematische Beschreibung des Zauberwürfels
+			\item Lösbarkeitssatz
+		\end{itemize}
+		
+		\hfill
+		
+		Mathematik:
+		\begin{itemize}
+			\item Gruppen allgemein
+			\item Symmetrische Gruppe und Zykel
+			\item Abstrakte Würfelbeschreibung
+			\item Beweis des Lösbarkeitssatzes
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.38\textwidth}
+		\centering
+		\includegraphics[height=0.35\textheight]{Bilder/Wuerfel_gerade_ausgeschnitten.png}\\[3pt]
+		\includegraphics[height=0.4\textheight]{Bilder/Zykel.pdf}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Graphentheorie}
+	\begin{minipage}{0.6\textwidth}
+		Inhalt: 
+		\begin{itemize}
+			\item Graphen
+			\item Planare Graphen
+			\item Färbung von Graphen
+			\item Euler-Kreise
+		\end{itemize}
+		
+		\hfill
+		
+		Mathematik:
+		\begin{itemize}
+			\item Triangulierungen
+			\item Beweistechniken
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.38\textwidth}
+		
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Tapetenmustergruppen}
+	\begin{minipage}{0.6\textwidth}
+		Inhalt: 
+		\begin{itemize}
+			\item Kongruenzabbildungen und Symmetrien
+			\item Verknüpfung von Kongruenzabbildungen
+			\item Tapetenmustergruppe
+			\item Warum es nur 17 Tapetenmustergruppen gibt
+		\end{itemize}
+		
+		\hfill
+		
+		Mathematik:
+		\begin{itemize}
+			\item Kongruenzabbildungen und Symmetrien
+			\item Verknüpfung von Kongruenzabbildungen
+			\item Gruppen
+			\item Beweis über Ausschlussprinzip (Flowchart)
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.38\textwidth}
+		\includegraphics[height=0.55\textheight, angle=90]{Bilder/Blumenbeispiel_Standalone_leer.pdf}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Parkettierungen}
+	\begin{minipage}{0.6\textwidth}
+		Inhalt: 
+		\begin{itemize}
+			\item Regelmäßige Parkettierungen
+			\item Parkettierungen mit allgemeinen 3- und 4-Ecken
+			\item Parkettierungen mit 5-Ecken
+			\item Aperiodische Parkettierungen (Penrose, Einstein)
+			\item Sphärische und hyperbolische Parkettierungen
+		\end{itemize}
+		
+		\hfill
+		
+		Mathematik:
+		\begin{itemize}
+			\item Innenwinkelsumme im \(n-\)Ecke
+			\item Beweisidee Aperiodizität
+			\item Nicht-Euklidische Geometrien
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.38\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{Bilder/Resultat_Viereck_konkav_Abschlussfolie.jpeg}\\[13pt]
+		
+		\includegraphics[height=0.4\textheight]{Bilder/Penrose_Stapel_umrandet_hoch.png}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Gerechtes Teilen}
+	\begin{minipage}{0.6\textwidth}
+		Inhalt: 
+		\begin{itemize}
+			\item Was heißt "gerecht"?
+			\item Gerechtes Teilen einer Perlenkette
+			\item Protokolle für gerechte Kuchenteilung
+			\item Das Sperner-Lemma
+		\end{itemize}
+		
+	
+		
+		\phantom{Möhrenbeet}
+		
+		
+		Mathematik:
+		\begin{itemize}
+			\item Funktionen
+			\item Protokoll (Fallunterscheidungen + Abstraktion)
+			\item Beweisstrukturen
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.38\textwidth}
+		\centering
+		\includegraphics[height=0.5\textheight]{Bilder/Dreieck_Beschriftung_Beispiel_Raeume.pdf}\\[3pt]
+		\includegraphics[width=0.9\textwidth]{Bilder/Perlenkette_gebogen.png}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\Large{Teil 2:}\\[20pt]
+	\Large{Konkrete Beispiele}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\Large{Dobble und projektive Geometrie}
+\end{frame}
+
+
+\begin{frame}{Dobble}
+	\begin{defbox*}{}{}
+		Ein ideales Dobble-Spiel ist eine Ansammlung von Karten mit Symbolen darauf, sodass Folgendes gilt:
+		\setbeamercolor{item projected}{bg=Blue!60,fg=white} %für Farbe, vorher Blue!60
+		\setbeamertemplate{enumerate items}[circle]
+		\begin{enumerate}%[label=\large\protect\textcircled{\small\arabic*}]
+			\item Die Anzahl der Symbole pro Karte ist immer gleich.
+			\item Jedes Symbol kommt gleich häufig vor.
+			\item Je zwei Karten haben immer genau ein Symbol gemeinsam.
+			\item Je zwei Symbole definieren immer genau eine Karte.
+		\end{enumerate}
+	\end{defbox*}
+\end{frame}
+
+
+\begin{frame}{Ein ganz einfaches Dobble-Spiel}
+	\begin{center}
+		\begin{tikzpicture}[scale=2.5]
+			\node at (0,1.5) [rectangle,draw] (k1) {\Huge{$\textcolor{blue}{A} \quad \textcolor{purple}{B}$}};
+			\node at (-1.5, 0) [rectangle, draw] (k2) {\Huge{\(\textcolor{blue}{A} \quad \textcolor{ForestGreen}{C}\)}};
+			\node at (1.5, 0) [rectangle, draw] (k3) {\Huge{\(\textcolor{purple}{B} \quad \textcolor{ForestGreen}{C}\)}};
+			\draw[very thick, <->, shorten <=5pt, shorten >=5pt, blue] (k1) -- node[left, pos=0.5] {A} (k2);
+			\draw[very thick, <->, shorten <=5pt, shorten >=5pt, purple] (k1) -- node[right, pos=0.5] {B} (k3);
+			\draw[very thick, <->, shorten <=5pt, shorten >=5pt, ForestGreen] (k2) -- node[above, pos=0.5] {C} (k3);
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Aufgabe}
+	\begin{center}	
+		Entwerft in der Gruppe ein Dobble-Spiel mit 3 Symbolen pro Karte. \\[10pt]
+		Überlegt euch zuerst, wie viele Karten ihr braucht. 
+	\end{center}
+	
+	
+	\vfill
+	
+	
+	\green{Erinnerung ideales Dobble-Spiel:}
+	\begin{itemize}
+		\item Auf jeder Karte sind gleich viele Symbole.
+		\item Jedes Symbol kommt gleich häufig vor. 
+		\item Je zwei Karten haben ein gemeinsames Symbol. 
+		\item Für jedes Paar an Symbolen gibt es eine Karte, auf denen die beiden drauf sind. 
+	\end{itemize}
+\end{frame}
+	
+\begin{frame}{Dobble}
+	\begin{defbox*}{}{}
+		Ein ideales Dobble-Spiel ist eine Ansammlung von Karten mit Symbolen darauf, sodass Folgendes gilt:
+		\setbeamercolor{item projected}{bg=Blue!60,fg=white} %für Farbe, vorher Blue!60
+		\setbeamertemplate{enumerate items}[circle]
+		\begin{enumerate}%[label=\large\protect\textcircled{\small\arabic*}]
+			\item Die Anzahl der Symbole pro Karte ist immer gleich.
+			\item Jedes Symbol kommt gleich häufig vor.
+			\item Je zwei Karten haben immer genau ein Symbol gemeinsam.
+			\item Je zwei Symbole definieren immer genau eine Karte.
+		\end{enumerate}
+	\end{defbox*}
+\end{frame}
+
+\begin{frame}{Ein erstes Ergebnis}
+	\begin{lemmabox*}{}{}
+		Für ein ideales Dobble-Spiel gilt: \\[-11pt]
+		\begin{enumerate}\setlength \parskip{8pt}
+			\item Die Anzahl der Symbole pro Karte  =  Häufigkeit der Symbole 
+			\item Die Anzahl der verschiedenen Symbole  =  Anzahl der Karten 
+		\end{enumerate}      
+	\end{lemmabox*}
+	\vspace{0.2cm}
+	Ein ideales Dobble-Spiel erfüllt:
+	\setbeamercolor{item projected}{bg=Blue!60,fg=white} %für Farbe
+	\setbeamertemplate{enumerate items}[circle]
+	\begin{enumerate}%[label=\large\protect\textcircled{\small\arabic*}]
+		\item Die Anzahl der Symbole pro Karte ist immer gleich.
+		\item Jedes Symbol kommt gleich häufig vor.
+		\item Je zwei Karten haben immer genau ein Symbol gemeinsam.
+		\item Je zwei Symbole definieren immer genau eine Karte.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Ein erstes Ergebnis}
+	\begin{lemmabox*}{}{}
+		Für ein ideales Dobble-Spiel gilt: \\[-11pt]
+		\begin{enumerate}\setlength \parskip{8pt}
+			\item Die Anzahl der Symbole pro Karte  =  Häufigkeit der Symbole 
+			\item Die Anzahl der verschiedenen Symbole  =  Anzahl der Karten 
+		\end{enumerate}      
+	\end{lemmabox*}
+	% \vspace{0.1cm}
+	\pause
+	\begin{folgbox*}{}{}
+		Ein ideales Dobble-Spiel mit \(m\) Symbolen pro Karte besteht aus \(m\cdot(m-1)+1\) Karten. 
+	\end{folgbox*}
+\end{frame}
+
+
+\begin{frame}{Uni-Mathe für die Schule}
+	\begin{itemize}
+		\item Verknüpfung mit bekanntem Spiele (Dobble)
+		\item "Graphischer" Beweise (Dobble) 
+		\item erst Beispiele, dann Erklärungen
+		\item selbst ausprobieren lassen
+		%\item (nur) Spezialfälle anschauen (		proj. Ebene beim Dobble)		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\Large{\beamerblue{Zauberwürfel und Gruppentheorie}}
+\end{frame}
+
+\begin{frame}{Der Lösbarkeitssatz}
+	\red{Lösbarkeitssatz}
+\end{frame}
+
+\begin{frame}
+	\red{Beweisidee Hinrichtung}
+\end{frame}
+
+\begin{frame}
+	\red{Beweisidee Rückrichtung}
+\end{frame}
+
+\begin{frame}
+	\red{Beweis Zykel zur Manöverkonstruktion}
+\end{frame}
+
+\begin{frame}
+	\red{Beweis graphisch ohne Zykel}
+\end{frame}
+
+\begin{frame}
+	\red{Reduktion wo noch??}
+\end{frame}
+
+\end{document}
